@@ -38,7 +38,7 @@ var CommentBox = React.createClass({
         url: this.props.url,
         dataType: 'json',
         type: 'POST',
-        data: comment,
+        data: {comment: comment},
         success: function(data) {
           this.setState({data: data});
         }.bind(this),
@@ -101,17 +101,26 @@ var CommentForm = React.createClass({
   render: function() {
     return (
       <form className="commentForm" onSubmit={this.handleSubmit}>
-        <input type="text" placeholder="Your name" ref="author" />
-        <input type="text" placeholder="Say something..." ref="text" />
-        <input type="submit" value="Post" />
+        <div class="form-group">
+          <label for="author_value">Name</label>
+          <input type="text" id="author_value" placeholder="Your name" ref="author" />
+        </div>
+        <div class="form-group">
+          <label for="comment_body">Comment</label>
+          <input type="text" id="comment_body" placeholder="Say something..." ref="text" />
+        </div>
+        <input type="submit" value="Post" class="btn btn-default" />
       </form>
     );
   }
 });
 
 $(function() {
-  React.render(
-    <CommentBox url="comments.json" pollInterval={2000} />,
-    document.getElementById('content')
-  );
+  var $content = $("#content");
+  if ($content.length > 0) {
+    React.render(
+      <CommentBox url="comments.json" pollInterval={2000} />,
+      document.getElementById('content')
+    );
+  }
 })
